@@ -11,11 +11,8 @@
         <table>
             <tr><td> <h1>Punk API Beer Overview</h1></td><td style="width:80px">&nbsp;</td><td><input type="checkbox" id="onlyFavorites" /><b> Only favorites</b><br /></td></tr>
         </table>
-       
-        
         <span class="errMess"></span>
-
-    </div>
+     </div>
 
     <div class="divBottomMargin">
         <input id="tbSearch" type="text" value="" class="form-control col-md-2" />
@@ -23,19 +20,18 @@
     </div>
     <div class="width100">
 
-        <div class="width95">
-            <table id="myTbl" class="table" border="0"></table>
+    <div class="width95">
+        <table id="myTbl" class="table" border="0"></table>
+    </div>
+    <br />
+    <div id="divBlock">
+        <div>
+            <table id="myPaginator" class="paginator"></table>
         </div>
-        <br />
-        <div id="divBlock">
-            <div>
-                <table id="myPaginator" class="paginator"></table>
-            </div>
-
-            <div id="currentPage">Current page: <span class="mySpan"></span></div>
-            <p id="message"></p>
-            <input id="btnRTNP" type="button" value="Return to normal presentation" class="btn btn-default" style="display:none" />
-        </div>
+        <div id="currentPage">Current page: <span class="mySpan"></span></div>
+        <p id="message"></p>
+        <input id="btnRTNP" type="button" value="Return to normal presentation" class="btn btn-default" style="display:none" />
+    </div>
     </div>
 
     <script src="Scripts/jquery-3.4.1.js"></script>
@@ -81,7 +77,6 @@
                 var idText = $(this).closest("tr").find(":nth-child(1)").text();
                 if ($(this).is(":checked")) {
                     favorites.push(idText);
-                    
                 }
                 else {
                     var index = favorites.indexOf(idText);
@@ -90,8 +85,7 @@
                 localStorage.setItem("favorites", JSON.stringify(favorites));
             });
         }
-
-
+        
         function Init(page) {
             $.ajax({
                 type: 'GET',
@@ -102,13 +96,11 @@
                     currentPage = page;
                     aData = data;
                     $("#onlyFavorites").is(":checked") ? showBeers(data, true) : showBeers(data, false);
-                    
                 },
                 error: function (error) {
                     $(".errMess").text(error.responseText);
                     return null;
                 }
-
             });
         }
 
@@ -119,22 +111,18 @@
                 datatype: 'JSON',
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    
                     if (data.length > 0) {
                         showBeers(data,false);
                         $("#myPaginator").hide();
                         $("#currentPage").hide();
                         $("#btnRTNP").show();
-
                     }
                 },
                 error: function (error) {
                     $(".errMess").text(error.responseText);
                     return null;
                 }
-
             });
-
         }
 
         function nextPage() {
@@ -143,8 +131,8 @@
                 Init(currentPage);
             }
             $(".mySpan").text(currentPage);
-
         }
+
         function prevPage() {
             if ((currentPage - 1) * 12 >= 1) {
                 currentPage--;
@@ -153,8 +141,6 @@
             $(".mySpan").text(currentPage);
         }
 
-       
-
         $(function () {
             Init(1); $(".mySpan").text("1");
 
@@ -162,17 +148,15 @@
                 if ($(this).is(":checked")) {
                     showBeers(aData, true);
                     $(".divBottomMargin").hide();
-                    ////
                 }
                 else {
                     showBeers(aData, false);
                     $(".divBottomMargin").show();
                 }
-
             });
 
             
-            favorites = JSON.parse(localStorage.getItem("favorites"));/*localStorage.getItem("favorites");*/
+            favorites = JSON.parse(localStorage.getItem("favorites"));
             if (favorites === null)
                 favorites = [];
 
